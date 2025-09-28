@@ -1,14 +1,14 @@
 package config
 
 import (
-	"log"
-
 	"github.com/joho/godotenv"
+	"github.com/supermario64bit/whatsapp_connect/pkg/logger"
 )
 
 func LoadEnvFile() {
-	err := godotenv.Load()
+	err := godotenv.Load("../../.env")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		logger.HighlightedDanger("Error loading .env file. Error: " + err.Error())
+		panic(err)
 	}
 }
