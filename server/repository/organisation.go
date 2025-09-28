@@ -94,7 +94,12 @@ func (repo *organisationRepository) Find(filter *model.Organisation) ([]*model.O
 	if len(whereClause) > 0 {
 		whereClause = "WHERE " + strings.Join(whereParts, " AND ")
 	}
-	whereClause = whereClause + " AND deleted_at IS NULL"
+
+	if whereClause != "" {
+		whereClause = whereClause + " AND deleted_at IS NULL"
+	} else {
+		whereClause = whereClause + " WHERE deleted_at IS NULL"
+	}
 
 	qry := fmt.Sprintf("SELECT * FROM %s ", table_name) + whereClause
 	rows, err := repo.db.Query(qry, args...)

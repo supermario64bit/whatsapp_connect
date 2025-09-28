@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS organisations (
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    deleted_at TIMESTAMPTZ
+    deleted_at TIMESTAMPTZ,
+    CONSTRAINT status_check CHECK (status IN ('active', 'inactive'))
 );
 
 CREATE OR REPLACE FUNCTION set_updated_at()
