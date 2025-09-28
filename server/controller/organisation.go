@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"errors"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -47,8 +49,10 @@ func (ctrl *organisationController) Create(c *gin.Context) {
 
 func (ctrl *organisationController) Find(c *gin.Context) {
 	var filter model.Organisation
-	err := c.ShouldBindBodyWithJSON(&filter)
-	if err != nil {
+	err := c.ShouldBindJSON(&filter)
+	if errors.Is(err, io.EOF) {
+		filter = model.Organisation{}
+	} else {
 		c.JSON(http.StatusBadRequest, writeFailedHttpResponseObj("Invalid Request Body", err))
 		return
 	}

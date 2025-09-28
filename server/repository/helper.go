@@ -21,7 +21,6 @@ func generateInsertQuery(table_name string, column_names []string, values [][]in
 		valStrings = append(valStrings, "("+strings.Join(placeholders, ", ")+")")
 	}
 
-	return fmt.Sprintf("INSERT INTO %s %s VALUES %s", table_name, colNames, strings.Join(valStrings, ", ")), args
+	return fmt.Sprintf("INSERT INTO %s %s VALUES %s RETURNING *", table_name, colNames, strings.Join(valStrings, ", ")), args
 
 }
-

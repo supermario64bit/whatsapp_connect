@@ -56,7 +56,7 @@ func (repo *organisationRepository) Create(org *model.Organisation) (*model.Orga
 	qry, args := generateInsertQuery(table_name, colNames, values)
 
 	var createdOrg model.Organisation
-	err := repo.db.QueryRow(qry, args...).Scan(&org.ID, &org.Name, &org.ContactNumber, &org.Email, &org.Status, &org.CreatedAt, &org.UpdatedAt, &org.DeletedAt)
+	err := repo.db.QueryRow(qry, args...).Scan(&createdOrg.ID, &createdOrg.Name, &createdOrg.ContactNumber, &createdOrg.Email, &createdOrg.Status, &createdOrg.CreatedAt, &createdOrg.UpdatedAt, &createdOrg.DeletedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -175,20 +175,20 @@ func (repo *organisationRepository) UpdateByID(updates *model.Organisation, id u
 	}
 
 	if strings.TrimSpace(updates.ContactNumber) != "" {
-		updatesParam = append(updatesParam, fmt.Sprintf("name = $%d", argPos))
-		args = append(args, strings.TrimSpace(updates.Name))
+		updatesParam = append(updatesParam, fmt.Sprintf("contact_number = $%d", argPos))
+		args = append(args, strings.TrimSpace(updates.ContactNumber))
 		argPos++
 	}
 
 	if strings.TrimSpace(updates.Email) != "" {
-		updatesParam = append(updatesParam, fmt.Sprintf("name = $%d", argPos))
-		args = append(args, strings.TrimSpace(updates.Name))
+		updatesParam = append(updatesParam, fmt.Sprintf("email = $%d", argPos))
+		args = append(args, strings.TrimSpace(updates.Email))
 		argPos++
 	}
 
 	if strings.TrimSpace(updates.Status) != "" {
-		updatesParam = append(updatesParam, fmt.Sprintf("name = $%d", argPos))
-		args = append(args, strings.TrimSpace(updates.Name))
+		updatesParam = append(updatesParam, fmt.Sprintf("status = $%d", argPos))
+		args = append(args, strings.TrimSpace(updates.Status))
 		argPos++
 	}
 

@@ -41,8 +41,8 @@ func (svc *organisationService) Create(org *model.Organisation) (*model.Organisa
 	new, err := svc.repo.Create(org)
 	if err != nil {
 		return nil, &types.ApplicationError{
-			HttpStatus: http.StatusBadRequest,
-			Message:    "Validation Failed",
+			HttpStatus: http.StatusInternalServerError,
+			Message:    "Unable to create organisation",
 			Err:        fmt.Errorf("Unable to create organisation. Error: " + err.Error()),
 		}
 	}
