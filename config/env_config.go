@@ -6,7 +6,7 @@ import (
 )
 
 func LoadEnvFile() {
-	err := godotenv.Load("../../.env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		logger.HighlightedDanger("Error loading .env file. Error: " + err.Error())
 		panic(err)
