@@ -32,7 +32,7 @@ func NewUserRepository() UserRepository {
 
 func (repo *userRepository) Create(user *model.User) (*model.User, error) {
 	if user == nil {
-		return nil, fmt.Errorf("Cannot create organisation for nil reference")
+		return nil, fmt.Errorf("Cannot create user for nil reference")
 	}
 
 	if user.ID > 0 {
@@ -55,13 +55,13 @@ func (repo *userRepository) Create(user *model.User) (*model.User, error) {
 
 	qry, args := generateInsertQuery(user_table_name, colNames, values)
 
-	var createdOrg model.User
-	err := repo.db.QueryRow(qry, args...).Scan(&createdOrg.ID, &createdOrg.Name, &createdOrg.Handle, &createdOrg.Mobile, &createdOrg.Email, &createdOrg.Status, &createdOrg.CreatedAt, &createdOrg.UpdatedAt, &createdOrg.DeletedAt)
+	var createdUser model.User
+	err := repo.db.QueryRow(qry, args...).Scan(&createdUser.ID, &createdUser.Name, &createdUser.Handle, &createdUser.Mobile, &createdUser.Email, &createdUser.Status, &createdUser.CreatedAt, &createdUser.UpdatedAt, &createdUser.DeletedAt)
 	if err != nil {
 		return nil, err
 	}
 
-	return &createdOrg, nil
+	return &createdUser, nil
 }
 
 func (repo *userRepository) Find(filter *model.User) ([]*model.User, error) {

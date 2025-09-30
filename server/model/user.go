@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/go-playground/validator/v10"
+)
 
 type User struct {
 	ID        uint64     `json:"id" db:"id"`
@@ -12,4 +16,20 @@ type User struct {
 	CreatedAt time.Time  `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at" db:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at" db:"deleted_at"`
+}
+
+func (org User) ValidateFields() []error {
+	validate := validator.New()
+	err := validate.Struct(org)
+
+	var errors []error
+	if err == nil {
+		return errors
+	}
+
+	for _, err := range err.(validator.ValidationErrors) {
+		errors = append(errors, err)
+	}
+
+	return errors
 }
