@@ -10,7 +10,7 @@ import (
 	"github.com/supermario64bit/whatsapp_connect/server/model"
 )
 
-const table_name string = "organisations"
+const org_table_name string = "organisations"
 
 type organisationRepository struct {
 	db *sql.DB
@@ -53,7 +53,7 @@ func (repo *organisationRepository) Create(org *model.Organisation) (*model.Orga
 		{org.Name, org.ContactNumber, org.Email, org.Status},
 	}
 
-	qry, args := generateInsertQuery(table_name, colNames, values)
+	qry, args := generateInsertQuery(org_table_name, colNames, values)
 
 	var createdOrg model.Organisation
 	err := repo.db.QueryRow(qry, args...).Scan(&createdOrg.ID, &createdOrg.Name, &createdOrg.ContactNumber, &createdOrg.Email, &createdOrg.Status, &createdOrg.CreatedAt, &createdOrg.UpdatedAt, &createdOrg.DeletedAt)
@@ -101,7 +101,7 @@ func (repo *organisationRepository) Find(filter *model.Organisation) ([]*model.O
 		whereClause = whereClause + " WHERE deleted_at IS NULL"
 	}
 
-	qry := fmt.Sprintf("SELECT * FROM %s ", table_name) + whereClause
+	qry := fmt.Sprintf("SELECT * FROM %s ", org_table_name) + whereClause
 	rows, err := repo.db.Query(qry, args...)
 	if err != nil {
 		return nil, err
@@ -136,7 +136,7 @@ func (repo *organisationRepository) Find(filter *model.Organisation) ([]*model.O
 }
 
 func (repo *organisationRepository) FindByID(id uint64) (*model.Organisation, error) {
-	qry := "SELECT * FROM " + table_name + " WHERE id = $1 AND deleted_at IS NULL LIMIT 1"
+	qry := "SELECT * FROM " + org_table_name + " WHERE id = $1 AND deleted_at IS NULL LIMIT 1"
 
 	var org model.Organisation
 
@@ -192,7 +192,7 @@ func (repo *organisationRepository) UpdateByID(updates *model.Organisation, id u
 		argPos++
 	}
 
-	qry := "UPDATE " + table_name + " SET " + strings.Join(updatesParam, ", ") +
+	qry := "UPDATE " + org_table_name + " SET " + strings.Join(updatesParam, ", ") +
 		fmt.Sprintf(" WHERE id = $%d AND deleted_at IS NULL RETURNING *", argPos)
 	args = append(args, id)
 
@@ -221,7 +221,7 @@ func (repo *organisationRepository) DeleteByID(id uint64) error {
 		return err
 	}
 
-	qry := "UPDATE " + table_name + " SET deleted_at = $1 WHERE id = $2 AND deleted_at IS NULL"
+	qry := "UPDATE " + org_table_name + " SET deleted_at = $1 WHERE id = $2 AND deleted_at IS NULL"
 	_, err = repo.db.Exec(qry, time.Now(), id)
 	return err
 }
