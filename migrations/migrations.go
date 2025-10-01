@@ -17,7 +17,7 @@ func Run() {
 	createDBIfNotExists()
 	db := db.New()
 
-	migrationScriptsDir := "../../migrations/scripts/"
+	migrationScriptsDir := "migrations/scripts/"
 
 	files, err := filepath.Glob(filepath.Join(migrationScriptsDir, "*.sql"))
 	logger.Info(strconv.Itoa(len(files)) + " migration scripts found.")
